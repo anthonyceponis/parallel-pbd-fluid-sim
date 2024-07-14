@@ -57,7 +57,7 @@ int main() {
 	// Gets called on window creation to init viewport.
 	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
-	const uint32_t particle_count = 5000; // Must be multiple of 100 for setup.
+	const uint32_t particle_count = 10000; // Must be multiple of 100 for setup.
 	Particles particles(particle_count);
 
 	//Shader shader("circle.vs.glsl", "circle.fs.glsl");

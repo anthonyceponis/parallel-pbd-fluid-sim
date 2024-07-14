@@ -1,5 +1,4 @@
 #include "solver.hpp"
-#include "spatial_grid_two.hpp"
 #include "spatial_grid.hpp"
 
 #include <bits/stdc++.h>
@@ -10,11 +9,10 @@ particles(_particles),
 neighbours(_particles.particle_count),
 world_size(_world_size) {
 	this->spatial_grid = new SpatialGrid(this->particles);
-	this->spatial_grid_two = new SpatialGridTwo(this->particles);
 	
 	// Setup particles.
 	const float spacing = this->particles.radius * 1.0f;
-	const glm::vec2 origin(0.1f, 2.0f);
+	const glm::vec2 origin(0.1f, 3.0f);
 	glm::vec2 pos = origin; 
 	const uint32_t cols = 50;
 	const uint32_t rows = this->particles.particle_count / cols;		
@@ -32,11 +30,10 @@ world_size(_world_size) {
 
 Solver::~Solver() { 
 	delete this->spatial_grid;
-	delete this->spatial_grid_two;
  };
 
 void Solver::update(const float _dt) {
-	const uint32_t sub_steps = 10;	
+	const uint32_t sub_steps = 8;	
 	const glm::vec2 G(0.0f, -10.0f);
 	const float dt = 0.01f / sub_steps;
 
@@ -70,13 +67,11 @@ void Solver::update(const float _dt) {
 };
 
 void Solver::findNeighbours() {
-	this->spatial_grid->build();		
+    this->spatial_grid->build();		
 	for (uint32_t i = 0; i < this->particles.particle_count; i++) {
 		const uint32_t query_size = this->spatial_grid->query(i);	
 		this->particles.neighbour_counts[i] = query_size;		
 	}
-
-	//this->spatial_grid_two->findNeighbours();
 }
 
 void Solver::solveBoundaries() {
@@ -104,8 +99,6 @@ void Solver::solveFluid() {
 
 		const uint32_t query_size = this->particles.neighbour_counts[i];
 
-		//std::cout << query_size << "\n";
-		
 		for (uint32_t j = 0; j < query_size; j++) {
 			const uint32_t nb_i = this->particles.neighbours[i][j];
 			glm::vec2 n = this->particles.positions[nb_i] - this->particles.positions[i];
@@ -141,58 +134,3 @@ void Solver::solveFluid() {
 		}	
 	}	
 }
-
-//void Solver::solveFluid() {
-//	const float eps = 0.0001f;
-//	const float particle_diameter = 2.0f * this->particles.radius;
-//	const float rest_density = 1.0f / (particle_diameter * particle_diameter);
-//	const float pi = 3.14159265f;
-//	const float h = this->smoothing_radius;
-//	const float h2 = h*h;
-//	const float kernel_scale = 4.0f / (pi * h2 * h2 * h2 * h2);
-//
-//	for (uint32_t i = 0; i < this->particles.particle_count; i++) {	
-//		float rho = 0.0f;		
-//		float sum_grad2 = 0.0f;
-//		glm::vec2 grad_i(0.0f);
-//		const uint32_t first = this->spatial_grid_two->first_neighbour[i];	
-//		const uint32_t num_neighbours = this->spatial_grid_two->first_neighbour[i+1] - first;
-//
-//
-//		std::cout << num_neighbours << "\n";
-//		
-//		for (uint32_t j = 0; j < num_neighbours; j++) {
-//			const uint32_t nb_i = this->spatial_grid_two->neighbours[first + j];
-//			glm::vec2 n = this->particles.positions[nb_i] - this->particles.positions[i];
-//			const float r2 = n.x*n.x + n.y*n.y;
-//						
-//			if (r2 > h2) {
-//				this->particles.gradients[nb_i] = glm::vec2(0.0f);
-//			} else {
-//				// Normalise.
-//				const float r = sqrt(r2);
-//				if (r > 0.0f) n /= r;
-//
-//				const float w = h2 - r2;
-//				rho += kernel_scale * w * w * w;
-//				const float grad = (kernel_scale * 3.0f * w * w * (-2.0f * r)) / rest_density;
-//				this->particles.gradients[nb_i] = n * grad;
-//				grad_i -= n * grad;
-//				sum_grad2 += grad * grad;	
-//			}
-//		}		
-//		
-//		sum_grad2 += grad_i.x * grad_i.x + grad_i.y * grad_i.y;
-//		const float c = rho / rest_density - 1.0f;	
-//		const float lambda = -c / (sum_grad2 + eps);
-//
-//		for (uint32_t j = 0; j < num_neighbours; j++) {
-//			const uint32_t nb_i = this->spatial_grid_two->neighbours[first + j];
-//			if (i == nb_i) {
-//				this->particles.positions[nb_i] += lambda * grad_i;
-//			} else {
-//				this->particles.positions[nb_i] += lambda * this->particles.gradients[nb_i];
-//			}
-//		}	
-//	}	
-//}

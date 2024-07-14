@@ -59,19 +59,19 @@ uint32_t SpatialGrid::query(const uint32_t particle_id) {
 	return query_size;
 };
 
-uint32_t SpatialGrid::hashCoords(const glm::ivec2 coords) {
+inline uint32_t SpatialGrid::hashCoords(const glm::ivec2 coords) {
 	// Must convert to unsigned int so that overflows wrap around.
 	const int32_t h = static_cast<uint32_t>(coords.x * 92837111)  ^ static_cast<uint32_t>(coords.y * 689287499) ; // Aribtrary hash function.
 	return abs(h) % this->table_size;
 };
 
-glm::ivec2 SpatialGrid::posToCoords(const glm::vec2 pos) {
-	const int32_t cell_x = static_cast<int32_t>(pos.x / this->cell_size);
-	const int32_t cell_y = static_cast<int32_t>(pos.y / this->cell_size);
+inline glm::ivec2 SpatialGrid::posToCoords(const glm::vec2 pos) {
+	const int32_t cell_x = static_cast<int32_t>((pos.x + 100.0f) / this->cell_size);
+	const int32_t cell_y = static_cast<int32_t>((pos.y + 1.0f) / this->cell_size);
 	return glm::ivec2(cell_x, cell_y);
 }
 
-uint32_t SpatialGrid::hashPos(const glm::vec2 pos) {
+inline uint32_t SpatialGrid::hashPos(const glm::vec2 pos) {
 	return SpatialGrid::hashCoords(SpatialGrid::posToCoords(pos));
 }
 

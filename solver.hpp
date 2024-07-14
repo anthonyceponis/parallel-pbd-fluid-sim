@@ -2,13 +2,11 @@
 
 #include "particles.hpp"
 #include "spatial_grid.hpp"
-#include "spatial_grid_two.hpp"
 
 struct Solver {
 	Particles &particles;
 	glm::vec2 world_size;
 	SpatialGrid *spatial_grid;
-	SpatialGridTwo *spatial_grid_two;
 	std::vector<uint32_t> neighbours;
 	const float smoothing_radius = 0.03f;
 
