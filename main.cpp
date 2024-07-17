@@ -79,7 +79,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Do stuff.
-		solver.update(dt);
+		solver.update();
 		renderer.drawParticles();
 
 		glfwSetWindowTitle(window, (title + " " + std::to_string(fps)).c_str());

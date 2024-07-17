@@ -1,0 +1,28 @@
+
+cmake_minimum_required(VERSION 3.10)
+project(CUDA_Project LANGUAGES CXX CUDA)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Find CUDA
+find_package(CUDA REQUIRED)
+
+# List all your source files manually
+set(CUDA_SOURCES
+    solver_gpu.cu
+)
+
+set(CPP_SOURCES
+    gpu_main.cpp
+)
+
+# Compile the CUDA code into a library
+cuda_add_library(cuda_functions STATIC ${CUDA_SOURCES})
+
+# Add the executable
+add_executable(CUDA_Project ${CPP_SOURCES})
+
+# Link the executable with the CUDA library
+target_link_libraries(CUDA_Project cuda_functions ${CUDA_LIBRARIES})

@@ -5,12 +5,11 @@
 
 struct Particles {
 	const uint32_t particle_count;
-	float radius = 0.01f;
 	std::vector<glm::vec2> positions;
 	std::vector<glm::vec2> prev_positions;
 	std::vector<glm::vec2> velocities;
 	std::vector<glm::vec2> gradients;
-	std::vector<std::vector<uint32_t>> neighbours;
+	std::vector<uint32_t> neighbours; // 2d flattened.
 	std::vector<uint32_t> neighbour_counts;
 	std::vector<float> densities;
 	

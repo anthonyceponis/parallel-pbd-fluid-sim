@@ -3,15 +3,16 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 #include "shader.hpp"
 #include "particles.hpp"
-#include <iostream>
+#include "solver.hpp"
 
 Renderer::Renderer(const glm::vec2 _screen_size, const float _scale, Particles &_particles) : 
 screen_size(_screen_size), 
 scale(_scale),
-shader("circle.vs.glsl", "circle.fs.glsl"),
+shader("shaders/circle.vs.glsl", "shaders/circle.fs.glsl"),
 particles(_particles){};
 
 void Renderer::drawParticles() {
@@ -44,7 +45,7 @@ void Renderer::drawParticles() {
 	this->shader.use();
 	shader.setMat4("projection", projection);
 	shader.setFloat("scale", 200.0f);
-	shader.setFloat("point_size", 2 * this->particles.radius);
+	shader.setFloat("point_size", 2 * constants::particle_radius); // x2 since point_size is the diameter.
 
 	glDrawArrays(GL_POINTS, 0, this->particles.particle_count);
 };
