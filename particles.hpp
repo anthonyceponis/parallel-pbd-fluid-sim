@@ -4,7 +4,8 @@
 #include <vector>
 
 struct Particles {
-	const uint32_t particle_count;
+	uint32_t particle_count;
+    const uint32_t max_particle_count;
 	std::vector<glm::vec2> positions;
 	std::vector<glm::vec2> prev_positions;
 	std::vector<glm::vec2> velocities;
@@ -13,5 +14,5 @@ struct Particles {
 	std::vector<uint32_t> neighbour_counts;
 	std::vector<float> densities;
 	
-	Particles(const uint32_t _particle_count);
+	Particles(const uint32_t _particle_count, const uint32_t _max_particle_count);
 };

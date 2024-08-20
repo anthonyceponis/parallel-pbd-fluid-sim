@@ -1,12 +1,14 @@
 #include "particles.hpp"
 
-Particles::Particles(const uint32_t _particle_count) : 
+Particles::Particles(const uint32_t _particle_count, const uint32_t _max_particle_count) : 
 particle_count(_particle_count),
-positions(_particle_count, glm::vec2(0.0f)),
-prev_positions(_particle_count, glm::vec2(0.0f)),
-velocities(_particle_count, glm::vec2(0.0f)),
-gradients(_particle_count, glm::vec2(0.0f)),
-neighbours(_particle_count * _particle_count, 0),
-neighbour_counts(_particle_count, 0),
-densities(_particle_count, 0.0f){};
+max_particle_count(_max_particle_count),
+positions(_max_particle_count),
+prev_positions(_max_particle_count),
+velocities(_max_particle_count),
+gradients(_max_particle_count),
+neighbours(_max_particle_count * _max_particle_count),
+neighbour_counts(_max_particle_count),
+densities(_max_particle_count)
+{};
 

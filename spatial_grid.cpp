@@ -8,8 +8,8 @@
 SpatialGrid::SpatialGrid(Particles &_particles) : 
 particles(_particles), 
 cell_size(0.045f),
-lookup(_particles.particle_count){
-	this->table_size = 2 * this->particles.particle_count;
+lookup(_particles.max_particle_count){
+	this->table_size = 2 * this->particles.max_particle_count;
 	this->counts.resize(this->table_size + 1, 0);
 };
 
