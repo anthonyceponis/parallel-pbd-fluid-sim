@@ -9,3 +9,4 @@ bash run.sh
 ```
 
 ### Preview
+<img src="pbd-fluid-sim-preview.gif" alt="Preview" width="600" />
